@@ -2,7 +2,7 @@
 
 A Go server that lets AI tools (Claude Desktop, Cursor, GitHub Copilot) talk to a Kmesh service mesh using natural language. Instead of learning `kmeshctl` commands or eBPF internals, you ask questions like "what version is running?" and the AI tool calls this server to get the answer.
 
-This is a prototype for the [CNCF Kmesh MCP Server LFX project](https://github.com/kmesh-dev/kmesh/issues/1800).
+This is a prototype for the [CNCF Kmesh MCP Server LFX project](https://github.com/kmesh-net/kmesh/issues/1800).
 
 ## How it works
 
@@ -56,9 +56,11 @@ internal/server/
 internal/tools/
   client.go               -- HTTP client for talking to Kmesh status server
   version.go              -- get_version tool (wraps /version endpoint)
+  health.go               -- get_daemon_health tool (wraps /debug/ready endpoint)
   fake_status_test.go     -- fake Kmesh server used by tests
   client_test.go          -- tests for the HTTP client
   version_test.go         -- tests for the get_version tool
+  health_test.go          -- tests for the get_daemon_health tool
 ```
 
 ## Running
@@ -103,11 +105,12 @@ go test -cover ./...
 
 ## Available tools
 
-| Tool          | What it does                                                    |
-| ------------- | --------------------------------------------------------------- |
-| `get_version` | Returns the Kmesh version from the daemon's `/version` endpoint |
+| Tool                | What it does                                                    |
+| ------------------- | --------------------------------------------------------------- |
+| `get_version`       | Returns the Kmesh version from the daemon's `/version` endpoint |
+| `get_daemon_health` | Checks daemon health via the `/debug/ready` endpoint            |
 
-More tools will be added as the project progresses (see the [proposal](https://github.com/kmesh-dev/kmesh/issues/1800) for the full list).
+More tools will be added as the project progresses (see the [proposal](https://github.com/kmesh-net/kmesh/issues/1800) for the full list).
 
 ## Connecting AI clients
 
@@ -115,25 +118,24 @@ Once the server is running, point your AI client at `http://localhost:8080/mcp`.
 
 ## Known limitations
 
-- Only `get_version` is implemented. The other 9 core tools are planned.
-- No `PodName` routing yet -- the tool always hits the configured status server address.
+- No `PodName` routing yet -- the tools always hit the configured status server address.
 
 ## What's planned
 
 | Tool                  | Endpoint                   | Status  |
 | --------------------- | -------------------------- | ------- |
 | `get_version`         | `/version`                 | Done    |
-| `get_daemon_health`   | `/debug/ready`             | Next    |
+| `get_daemon_health`   | `/debug/ready`             | Done    |
 | `config_dump`         | `/debug/config_dump/*`     | Planned |
 | `get_bpf_maps`        | `/debug/config_dump/bpf/*` | Planned |
 | `list_waypoints`      | Kubernetes Gateway API     | Planned |
 | `get_waypoint_status` | Kubernetes Gateway API     | Planned |
 | `get_authz_status`    | `/authz`                   | Planned |
-| `get_logger_levels`   | `/debug/loggers`           | Planned |
+| `get_logger_level`    | `/debug/loggers`           | Planned |
 | `list_daemon_pods`    | Kubernetes API             | Planned |
 | `get_mesh_namespaces` | Kubernetes API             | Planned |
 
-See the full [proposal](https://github.com/kmesh-dev/kmesh/issues/1800) for details.
+See the full [proposal](https://github.com/kmesh-net/kmesh/issues/1800) for details.
 
 ## Tech stack
 

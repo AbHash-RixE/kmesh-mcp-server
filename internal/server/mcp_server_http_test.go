@@ -67,7 +67,7 @@ func TestHTTPToolDiscovery(t *testing.T) {
 	for _, tool := range res.Tools {
 		names[tool.Name] = true
 	}
-	for _, want := range []string{"get_version"} {
+	for _, want := range []string{"get_version", "get_daemon_health"} {
 		if !names[want] {
 			t.Errorf("expected tool %q to be advertised, got %v", want, res.Tools)
 		}

@@ -11,8 +11,9 @@ func Setup(t *tools.Toolset) *mcp.Server {
 		nil,
 	)
 
-	//add tool to mcp server (s)
+	//add tools to mcp server (s)
 	mcp.AddTool(s, tools.GetVersionTool(), t.GetVersion)
+	mcp.AddTool(s, tools.GetDaemonHealthTool(), t.GetDaemonHealth)
 
 	return s
 }
