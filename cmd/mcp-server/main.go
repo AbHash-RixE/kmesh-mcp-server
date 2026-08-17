@@ -39,9 +39,9 @@ func main() {
 }
 
 // get kmesh address from env
-func envOr(key, falback string) string {
+func envOr(key, fallback string) string {
 	if v := os.Getenv(key); v != "" {
 		return v
 	}
-	return falback
+	return fallback
 }

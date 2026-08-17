@@ -11,7 +11,7 @@ import (
 
 // Request from client
 type GetVersionParams struct {
-	PodName string `json:"pod_name,omitempty" jsonschema:"name of the kmesh-daemon pod to query; when empty the configured status server address is used"`
+	//PodName string `json:"pod_name,omitempty" jsonschema:"name of the kmesh-daemon pod to query; when empty the configured status server address is used"`
 }
 
 // Response from kmesh
@@ -31,9 +31,9 @@ func GetVersionTool() *mcp.Tool {
 }
 
 // Tool Handler for Toolset
-// in (contex , MCP request, tool paramete)
+// params: context, MCP request, tool parameters
 func (t *Toolset) GetVersion(ctx context.Context, _ *mcp.CallToolRequest, _ GetVersionParams) (*mcp.CallToolResult, GetVersionResult, error) {
-	body, status, err := t.client.GET(ctx, "/version")
+	body, status, err := t.client.Get(ctx, "/version")
 	if err != nil {
 		//empty GetVersionResult{}
 		return nil, GetVersionResult{}, err

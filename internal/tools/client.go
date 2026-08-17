@@ -37,7 +37,7 @@ func NewStatusClient(baseURL string) *StatusClient {
 }
 
 // GET request common to all tools
-func (c *StatusClient) GET(ctx context.Context, path string) ([]byte, int, error) {
+func (c *StatusClient) Get(ctx context.Context, path string) ([]byte, int, error) {
 	//create request
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.baseURL+path, nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func (c *StatusClient) GET(ctx context.Context, path string) ([]byte, int, error
 	//send request
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return nil, 0, fmt.Errorf("reading response from %s: %w", path, err)
+		return nil, 0, fmt.Errorf("sending request to %s: %w", path, err)
 	}
 
 	//close resource associated with the HTTP response
